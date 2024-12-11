@@ -25,7 +25,7 @@ bool parseData(std::string const& puzzleInput,List& firstList,List& secondList)
 
 uint64_t firstPart(List const& firstList,List const& secondList)
 {
-	uint64_t result = 0;
+	auto result = 0ul;
 	for(auto firstNumber=firstList.cbegin(),secondNumber=secondList.cbegin();firstNumber!=firstList.cend();++firstNumber,++secondNumber)
 	{
 		result += std::abs(*firstNumber-*secondNumber);
@@ -35,10 +35,10 @@ uint64_t firstPart(List const& firstList,List const& secondList)
 
 uint64_t secondPart(List const& firstList,List const& secondList)
 {
-	uint64_t result = 0;
+	auto result = 0ul;
 	for(auto currentNumber=firstList.cbegin();currentNumber!=firstList.cend();++currentNumber)
 	{
-		uint64_t const occurences = std::count_if(secondList.cbegin(),secondList.cend(),[&currentNumber](long const& n){return n==*currentNumber;});
+		auto const occurences = std::count_if(secondList.cbegin(),secondList.cend(),[&currentNumber](long const& n){return n==*currentNumber;});
 		result += occurences * *currentNumber;
 	}
 	return result;
