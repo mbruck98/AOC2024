@@ -25,8 +25,8 @@ uint64_t firstPart(std::string const& memory)
 	auto result = 0ul;
 	std::regex const pattern {"mul\\((\\d{1,3}),\\s*(\\d{1,3})\\)"};
 	auto const begin = std::sregex_iterator(memory.cbegin(), memory.cend(), pattern);
-    auto const end = std::sregex_iterator();
-    for (auto i = begin; i != end; ++i) {
+	auto const end = std::sregex_iterator();
+	for (auto i = begin; i != end; ++i) {
 		auto commaIndex = 0ul;
 		auto const mul = i->str();
 		std::string strNum;
@@ -65,12 +65,11 @@ uint64_t secondPart(std::string const& memory)
 		{};
 		long value;
 		bool enable;
-
 	};
 	std::vector<Index> indices;
 	std::regex pattern ("do\\(\\)");
 	auto begin = std::sregex_iterator(memory.cbegin(), memory.cend(), pattern);
-    auto const end = std::sregex_iterator();
+	auto const end = std::sregex_iterator();
 	for (auto i = begin; i != end; ++i) 
 	{
 		indices.push_back({i->position(),true});
@@ -82,11 +81,12 @@ uint64_t secondPart(std::string const& memory)
 		indices.push_back({i->position(),false});
 	}
 	std::sort(indices.begin(),indices.end(),[](Index const& i1,Index const& i2){return i1.value<i2.value;});
-	auto currentIndex = std::find_if(indices.cbegin(),indices.cend(),[](Index const& i){return i.enable;});
-	result += firstPart(memory.substr(0,currentIndex->value));
+	auto nextDisableIndex = std::find_if(indices.cbegin(),indices.cend(),[](Index const& i){return !i.enable;});
+	auto currentIndex = std::find_if(indices.cbegin(),indices.cend(),[&nextDisableIndex](Index const& i){return (i.enable)&&(i.value>nextDisableIndex->value);});
+	result += firstPart(memory.substr(0,nextDisableIndex->value));
 	while(currentIndex != indices.cend())
 	{	
-		auto const nextDisableIndex = std::find_if(indices.cbegin(),indices.cend(),[&currentIndex](Index const& i){return (!i.enable)&&(i.value>currentIndex->value);});
+		nextDisableIndex = std::find_if(indices.cbegin(),indices.cend(),[&currentIndex](Index const& i){return (!i.enable)&&(i.value>currentIndex->value);});
 		auto size = 0ul;
 		if(nextDisableIndex == indices.cend())
 		{
