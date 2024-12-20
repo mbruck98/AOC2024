@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <vector>
 #include <sstream>
+#include <numeric>
+
 
 using Text = std::vector<std::string>;
 
@@ -93,23 +95,8 @@ uint64_t secondPart(Text const& input)
 					auto const sameColumns = (chars[0] == chars[1]) &&  (chars[2] == chars[3]);
 					if(sameRows || sameColumns)
 					{
-						auto sum = 0;
-						for(auto ch:chars)
-						{
-							if(ch == 'M')
-							{
-								sum += 1;
-							}
-							else if(ch == 'S')
-							{
-								sum += -1;
-							}
-							else
-							{
-								sum += -100;
-							}
-						}			
-						if(sum==0)
+						auto sum = 'M'+'M'+'S'+'S';
+						if(std::accumulate(chars,chars+4,0) == sum)
 						{
 							result += 1;
 						}
